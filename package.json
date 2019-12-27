@@ -1,6 +1,6 @@
 {
   "name": "promise-all-reject-late",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Like Promise.all, but save rejections until all promises are resolved",
   "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
   "license": "ISC",
