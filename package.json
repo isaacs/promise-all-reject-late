@@ -10,6 +10,10 @@
     "postversion": "npm publish",
     "prepublishOnly": "git push origin --follow-tags"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isaacs/promise-all-reject-late.git"
+  },
   "tap": {
     "check-coverage": true
   },
