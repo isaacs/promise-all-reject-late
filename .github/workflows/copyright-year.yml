@@ -1,0 +1,37 @@
+name: "Update Copyright Year in License"
+
+on:
+  push:
+    branches:
+      - isaacs/copyright-year-action
+      - main
+  workflow_dispatch:
+
+jobs:
+  license-copyright-year:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: print all dates
+        run: |
+          dates=($(git log --date=format:%Y --pretty=format:'%ad' --reverse | sort | uniq))
+          if [ "${#dates[@]}" -eq 1 ]; then
+            datestr="${dates}"
+          else
+            datestr="${dates} - ${dates[${#dates[@]}-1]}"
+          fi
+          for l in LICENSE*; do
+            perl -pi -e "s/^Copyright.* Isaac Z. Schlueter.*$/Copyright (c) ${datestr}, Isaac Z. Schlueter/" $l
+          done
+      - name: check in licenses if modified
+        run: |
+          git config --global user.email "license-year-bot@example.com"
+          git config --global user.name "License Year Bot"
+          if [ $(git status --porcelain | egrep '^ M ' | wc -l) -gt 0 ]; then
+            git add LICENSE*
+            git commit -m "chore: add copyright year to license"
+            git push
+          fi
+
