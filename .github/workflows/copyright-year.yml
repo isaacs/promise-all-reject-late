@@ -15,16 +15,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: print all dates
-        run: |
-          dates=($(git log --date=format:%Y --pretty=format:'%ad' --reverse | sort | uniq))
-          if [ "${#dates[@]}" -eq 1 ]; then
-            datestr="${dates}"
-          else
-            datestr="${dates} - ${dates[${#dates[@]}-1]}"
-          fi
-          for l in LICENSE*; do
-            perl -pi -e "s/^Copyright.* Isaac Z. Schlueter.*$/Copyright (c) ${datestr}, Isaac Z. Schlueter/" $l
-          done
+        run: bash .github/workflows/copyright-year.sh
       - name: check in licenses if modified
         run: |
           git config --global user.email "license-year-bot@example.com"
