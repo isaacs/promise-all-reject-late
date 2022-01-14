@@ -18,11 +18,8 @@ jobs:
         run: bash .github/workflows/copyright-year.sh
       - name: check in licenses if modified
         run: |
-          git config --global user.email "license-year-bot@example.com"
-          git config --global user.name "License Year Bot"
-          if [ $(git status --porcelain | egrep '^ M ' | wc -l) -gt 0 ]; then
-            git add LICENSE*
-            git commit -m "chore: add copyright year to license"
-            git push
-          fi
-
+          bash .github/workflows/commit-if-modified.sh \
+            "license-year-bot@example.com" \
+            "License Year Bot" \
+            "chore: add copyright year to license" \
+            LICENSE*
