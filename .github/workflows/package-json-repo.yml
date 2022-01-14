@@ -1,0 +1,31 @@
+name: "update repo in package.json"
+
+on:
+  push:
+    branches:
+      - isaacs/package-json-repo-action
+      - main
+  workflow_dispatch:
+
+# ${{github.repository}} and $GITHUB_REPOSITORY have
+# the repo url, but is that the original if it's a fork?
+# test by forking a repo, adding this, and seeing what
+# happens.
+jobs:
+  package-json-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 16.x
+      - name: put repo in package.json
+        run: node .github/workflows/package-json-repo.js
+      - name: check in package.json if modified
+        run: |
+          bash -x .github/workflows/commit-if-modified.sh \
+            "package-json-repo-bot@example.com" \
+            "package.json Repo Bot" \
+            "chore: add repo to package.json" \
+            package.json package-lock.json
