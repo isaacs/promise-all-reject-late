@@ -18,5 +18,6 @@
   },
   "funding": {
     "url": "https://github.com/sponsors/isaacs"
-  }
+  },
+  "repository": "https://github.com/isaacs/promise-all-reject-late"
 }
