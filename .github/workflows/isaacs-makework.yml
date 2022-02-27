@@ -1,21 +1,18 @@
-name: "update repo in package.json"
+name: "various tidying up tasks to silence nagging"
 
 on:
   push:
     branches:
-      - isaacs/package-json-repo-action
       - main
   workflow_dispatch:
 
-# ${{github.repository}} and $GITHUB_REPOSITORY have
-# the repo url, but is that the original if it's a fork?
-# test by forking a repo, adding this, and seeing what
-# happens.
 jobs:
-  package-json-repo:
+  makework:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Use Node.js
         uses: actions/setup-node@v2.1.4
         with:
@@ -29,3 +26,12 @@ jobs:
             "package.json Repo Bot" \
             "chore: add repo to package.json" \
             package.json package-lock.json
+      - name: put all dates in license copyright line
+        run: bash .github/workflows/copyright-year.sh
+      - name: check in licenses if modified
+        run: |
+          bash .github/workflows/commit-if-modified.sh \
+            "license-year-bot@example.com" \
+            "License Year Bot" \
+            "chore: add copyright year to license" \
+            LICENSE*
